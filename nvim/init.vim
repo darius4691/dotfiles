@@ -35,7 +35,7 @@ set showtabline=2                           " show tab line always
 " - For Neovim: ~/.config/nvim/plugins
 " - Avoid using standard Vim directory names like 'plugin'
 let plug_install = 0
-let autoload_plug_path = stdpath('data') . '/autoload/plug.vim'
+let autoload_plug_path = stdpath('data') . '/site/autoload/plug.vim'
 if !filereadable(autoload_plug_path)
     silent exe '!curl -fL --create-dirs -o ' . autoload_plug_path . 
         \ ' https://raw.github.com/junegunn/vim-plug/master/plug.vim'
