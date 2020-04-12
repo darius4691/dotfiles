@@ -1,13 +1,19 @@
+# shell opts
+setopt autocd
+setopt completealiases
+setopt histignorealldups
+setopt histfindnodups
+setopt incappendhistory
+setopt sharehistory
+
 if [[ $OSTYPE == *darwin* ]]; then
   export PATH="${HOME}/perl5/bin${PATH:+:${PATH}}"
   export PERL5LIB="${HOME}/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"
   export PERL_LOCAL_LIB_ROOT="${HOME}/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"
   export PERL_MB_OPT="--install_base ${HOME}/perl5"
   export PERL_MM_OPT="INSTALL_BASE=${HOME}/perl5"
-  export PATH=${HOME}/anaconda3/bin:$PATH
 fi
 
-export PATH=$HOME/.zsh/Pinyin-Completion/bin:$PATH
 
 #zplug
 if [ ! -d ${ZPLUG_HOME} ]; then
@@ -62,6 +68,14 @@ alias du="ncdu"
 alias vi="nvim"
 alias tmux='tmux -f $XDG_CONFIG_HOME/tmux/config'
 alias fzf="fzf --preview 'bat --style=numbers --color=always {} | head -500'"
+
+alias la='ls -A'
+alias ll='ls -lA'
+if [[ $OSTYPE == *darwin* ]]; then
+    alias ls='ls -G'
+else
+    alias ls='ls --color=auto'
+fi
 
 # smart case auto completion
 zstyle ':completion:*'  matcher-list 'm:{a-z}={A-Z}'
