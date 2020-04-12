@@ -30,7 +30,6 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 zplug 'MichaelAquilina/zsh-you-should-use' # prompt you should use for alias 
 zplug 'ael-code/zsh-colored-man-pages'
 zplug 'zsh-users/zsh-completions'
-zplug 'vasyharan/zsh-brew-services', if:"[[ $OSTYPE == *darwin* ]]"
 # zplug 'mafredri/zsh-async'
 zplug 'denysdovhan/spaceship-prompt', use:spaceship.zsh, from:github, as:theme
 zplug "zsh-users/zsh-autosuggestions", use:"zsh-autosuggestions.zsh"
@@ -42,6 +41,7 @@ zplug "$ZDOTDIR/Pinyin-Completion", from:local, use:"pinyin-comp", as:command
 if [[ $OSTYPE == *darwin* ]]; then
     zplug "sharkdp/bat", from:gh-r, as:command, rename-to:bat, use:"*86*64*darwin*", if:"[[ $OSTYPE == *darwin* ]]"
     zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf, use:"*darwin*amd64*", if:"[[ $OSTYPE == *darwin* ]]"
+    zplug 'vasyharan/zsh-brew-services', if:"[[ $OSTYPE == *darwin* ]]"
 else
     zplug "sharkdp/bat", from:gh-r, as:command, rename-to:bat, use:"*86*64*linux*gnu*", if:"[[ $OSTYPE == *linux* ]]"
     zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf, use:"*linux*amd64*", if:"[[ $OSTYPE == *linux* ]]"
