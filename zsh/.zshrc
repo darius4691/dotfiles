@@ -39,12 +39,17 @@ zplug "$ZDOTDIR/Pinyin-Completion", from:local, use:"shell/pinyin-comp.zsh"
 zplug "$ZDOTDIR/Pinyin-Completion", from:local, use:"pinyin-comp", as:command
 # zplug 'makeitjoe/incr.zsh'
 # bat
-zplug "sharkdp/bat", from:gh-r, as:command, rename-to:bat, use:"*86*64*darwin*", if:"[[ $OSTYPE == *darwin* ]]"
-zplug "sharkdp/bat", from:gh-r, as:command, rename-to:bat, use:"*86*64*linux*gnu*", if:"[[ $OSTYPE == *linux* ]]"
+if [[ $OSTYPE == *darwin* ]]; then
+    zplug "sharkdp/bat", from:gh-r, as:command, rename-to:bat, use:"*86*64*darwin*", if:"[[ $OSTYPE == *darwin* ]]"
+    zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf, use:"*darwin*amd64*", if:"[[ $OSTYPE == *darwin* ]]"
+else
+    zplug "sharkdp/bat", from:gh-r, as:command, rename-to:bat, use:"*86*64*linux*gnu*", if:"[[ $OSTYPE == *linux* ]]"
+    zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf, use:"*linux*amd64*", if:"[[ $OSTYPE == *linux* ]]"
+fi
+    
+
 
 # FZF
-zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf, use:"*darwin*amd64*", if:"[[ $OSTYPE == *darwin* ]]"
-zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf, use:"*linux*amd64*", if:"[[ $OSTYPE == *linux* ]]"
 zplug "junegunn/fzf", use:"bin/fzf-tmux", defer:2, dir:$XDG_DATA_HOME/fzf, as:command
 zplug "junegunn/fzf", use:"shell/*.zsh", defer:2, dir:$XDG_DATA_HOME/fzf
 
