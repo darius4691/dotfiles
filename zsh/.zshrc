@@ -53,6 +53,7 @@ fi
 zplug "junegunn/fzf", use:"bin/fzf-tmux", defer:2, dir:$XDG_DATA_HOME/fzf, as:command
 zplug "junegunn/fzf", use:"shell/*.zsh", defer:2, dir:$XDG_DATA_HOME/fzf
 
+zplug 'zdharma/fast-syntax-highlighting', defer:1 #Switch themes via fast-theme {theme-name}.
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
@@ -61,7 +62,6 @@ if ! zplug check --verbose; then
         echo; zplug install
     fi
 fi
-zplug 'zdharma/fast-syntax-highlighting', defer:1 #Switch themes via fast-theme {theme-name}.
 # Then, source plugins and add commands to $PATH
 zplug load
 
