@@ -20,7 +20,6 @@ check_commands(){
     git
     ag
     bat
-    tat
     )
     local i
     for i in "${required_command[@]}"; do
@@ -56,11 +55,9 @@ zplug "$ZDOTDIR/Pinyin-Completion", from:local, use:"pinyin-comp", as:command
 # zplug 'makeitjoe/incr.zsh'
 # bat
 if [[ $OSTYPE == *darwin* ]]; then
-    zplug "sharkdp/bat", from:gh-r, as:command, rename-to:bat, use:"*86*64*darwin*", if:"[[ $OSTYPE == *darwin* ]]"
     zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf, use:"*darwin*amd64*", if:"[[ $OSTYPE == *darwin* ]]"
     zplug 'vasyharan/zsh-brew-services', if:"[[ $OSTYPE == *darwin* ]]"
 else
-    zplug "sharkdp/bat", from:gh-r, as:command, rename-to:bat, use:"*86*64*linux*gnu*", if:"[[ $OSTYPE == *linux* ]]"
     zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf, use:"*linux*amd64*", if:"[[ $OSTYPE == *linux* ]]"
 fi
     
