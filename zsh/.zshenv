@@ -20,6 +20,7 @@ fi
 export EDITOR='nano'
 export VISUAL='nano'
 export PAGER='less'
+export FPP_EDITOR='nvim'
 export ZPLUG_HOME=${XDG_DATA_HOME}/zplug
 export LC_ALL=en_US.UTF-8 
 

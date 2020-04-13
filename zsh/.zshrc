@@ -71,7 +71,7 @@ typeset -g ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=cyan,underline"
 alias top="htop"
 alias du="ncdu"
 alias vi="nvim"
-alias tmux='tmux -f $XDG_CONFIG_HOME/tmux/config'
+alias tmux='tmux -f $XDG_CONFIG_HOME/tmux/tmux.conf'
 alias fzf="fzf --preview 'bat --style=numbers --color=always {} | head -500'"
 
 alias la='ls -A'
