@@ -14,6 +14,23 @@ if [[ $OSTYPE == *darwin* ]]; then
   export PERL_MM_OPT="INSTALL_BASE=${HOME}/perl5"
 fi
 
+# command check
+check_commands(){
+    local required_command=(
+    git
+    ag
+    bat
+    tat
+    )
+    local i
+    for i in "${required_command[@]}"; do
+        if ! [ -x "$(command -v $i)" ]; then
+            echo "$i is not installed." 
+        fi
+    done
+}
+check_commands
+unfunction check_commands
 
 #zplug
 if [ ! -d ${ZPLUG_HOME} ]; then
