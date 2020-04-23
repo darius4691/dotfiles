@@ -17,8 +17,8 @@ if [[ "$OSTYPE" == darwin* ]]; then
 fi
 
 
-export EDITOR='nano'
-export VISUAL='nano'
+export EDITOR='nvim'
+export VISUAL='nvim'
 export PAGER='less'
 export FPP_EDITOR='nvim'
 export ZPLUG_HOME=${XDG_DATA_HOME}/zplug
@@ -26,4 +26,4 @@ export LC_ALL=en_US.UTF-8
 
 export IPYTHONDIR="$XDG_CONFIG_HOME"/jupyter
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME"/jupyter
-export CONDARC="$XDG_CONFIG_HOME"/conda
+export CONDARC=$XDG_CONFIG_HOME/conda/condarc

@@ -47,7 +47,7 @@ zplug 'MichaelAquilina/zsh-you-should-use' # prompt you should use for alias
 zplug 'ael-code/zsh-colored-man-pages'
 zplug 'zsh-users/zsh-completions'
 # zplug 'mafredri/zsh-async'
-zplug 'denysdovhan/spaceship-prompt', use:spaceship.zsh, from:github, as:theme
+zplug 'denysdovhan/spaceship-prompt', use:spaceship.zsh, from:github, as:theme, hook-load:"export SPACESHIP_VI_MODE_SHOW=false"
 zplug "zsh-users/zsh-autosuggestions", use:"zsh-autosuggestions.zsh"
 zplug "chubin/cheat.sh", use:"share/cht.sh.txt", as:command, rename-to:cht
 zplug "$ZDOTDIR/Pinyin-Completion", from:local, use:"shell/pinyin-comp.zsh"
@@ -55,8 +55,9 @@ zplug "$ZDOTDIR/Pinyin-Completion", from:local, use:"pinyin-comp", as:command
 # zplug 'makeitjoe/incr.zsh'
 # bat
 if [[ $OSTYPE == *darwin* ]]; then
-    zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf, use:"*darwin*amd64*", if:"[[ $OSTYPE == *darwin* ]]"
-    zplug 'vasyharan/zsh-brew-services', if:"[[ $OSTYPE == *darwin* ]]"
+    zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf, use:"*darwin*amd64*"
+    zplug 'vasyharan/zsh-brew-services'
+#    zplug "betta-cyber/netease-music-tui", from:gh-r, as:command, rename-to:ncmt, use:"*macos*"
 else
     zplug "junegunn/fzf-bin", from:gh-r, as:command, rename-to:fzf, use:"*linux*amd64*", if:"[[ $OSTYPE == *linux* ]]"
 fi
