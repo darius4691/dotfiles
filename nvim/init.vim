@@ -50,7 +50,8 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'} " coc system
 Plug 'joshdick/onedark.vim' " one dark color theme
 Plug 'itchyny/lightline.vim' " status line
 Plug 'tpope/vim-fugitive' " git integration
-Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'} " python color syntax enhance TODO: pip install pynvim and do :UpdateRemotePlugins
+
+" Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'} " python color syntax enhance TODO: pip install pynvim and do :UpdateRemotePlugins
 
 "vim indent object 
 " <count>ai	An Indentation level and line above.
@@ -81,6 +82,7 @@ let g:coc_global_extensions = [
     \ 'coc-explorer',
     \ 'coc-git',
     \ 'coc-python',
+    \ 'coc-highlight'
     \ ]
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
