@@ -1,7 +1,14 @@
-" BASIC SETTINGS
+" ______  _______  ______ _____ _     _ _______
+" |     \ |_____| |_____/   |   |     | |______
+" |_____/ |     | |    \_ __|__ |_____| ______|
+" 
+" neovim configuration files
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                Basic Settins                                 "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+                                              
 syntax enable                               " syntax highlight
-
-
 set number                                  " show line numbers
 set ruler
 set ttyfast                                 " terminal acceleration
@@ -22,17 +29,17 @@ set nowritebackup
 set cmdheight=2                             " Give more space for displaying messages.
 set updatetime=300                          " reduce updatetime (default is 4000 ms = 4 s) leads to noticeable
 set shortmess+=c                            " Don't pass messages to ins-completion-menu.
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-set signcolumn=yes
+set signcolumn=yes                          " Always show the signcolumn, otherwise it would shift the text each time diagnostics appear/become resolved.
 set noshowmode                              " compatible with lightline
 set showtabline=2                           " show tab line always
 
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                   vim plug                                   "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" VIM-PLUG
 " Specify a directory for plugins
-" - For Neovim: ~/.config/nvim/plugins
+" - For Neovim: $XDG_DATA_HOME/nvim/plugins
 " - Avoid using standard Vim directory names like 'plugin'
 let plug_install = 0
 let autoload_plug_path = stdpath('data') . '/site/autoload/plug.vim'
@@ -44,25 +51,16 @@ if !filereadable(autoload_plug_path)
 endif
 unlet autoload_plug_path
 call plug#begin(stdpath('data') . '/plugged')
-" Make sure you use single quotes
-
+" PLUGINS  Make sure you use single quotes
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " coc system
-Plug 'joshdick/onedark.vim' " one dark color theme
-Plug 'itchyny/lightline.vim' " status line
-Plug 'tpope/vim-fugitive' " git integration
-
-" Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'} " python color syntax enhance TODO: pip install pynvim and do :UpdateRemotePlugins
-
-"vim indent object 
-" <count>ai	An Indentation level and line above.
-" <count>ii	Inner Indentation level (no line above).
-" <count>aI	An Indentation level and lines above/below.
-" <count>iI	Inner Indentation level (no lines above/below).
-Plug 'michaeljsmith/vim-indent-object' " 
-
-" fzf integration
-Plug '$XDG_DATA_HOME/fzf'
-Plug 'junegunn/fzf.vim'
+Plug 'joshdick/onedark.vim'                     " one dark color theme
+Plug 'itchyny/lightline.vim'                    " status line
+Plug 'tpope/vim-fugitive'                       " git integration
+Plug 'glench/vim-jinja2-syntax'                 " html sub language syntax
+Plug 'junegunn/vim-easy-align'                  " align by :EasyAlign
+Plug 'michaeljsmith/vim-indent-object'          " <count>ai ii aI iI indent level
+Plug '$XDG_DATA_HOME/fzf'                       " fzf integration
+Plug 'junegunn/fzf.vim'                         " fzf integration
 
 " Initialize plugin system
 call plug#end()
@@ -72,21 +70,24 @@ endif
 unlet plug_install
 " nvim plug end
 
-
-
-
-" COC Configuration
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                     Conqure of Completion (coc) settings                     "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " COC Extensions
 let g:coc_global_extensions = [
     \ 'coc-pairs',
     \ 'coc-explorer',
     \ 'coc-git',
     \ 'coc-python',
-    \ 'coc-highlight'
+    \ 'coc-html',
+    \ 'coc-json',
+    \ 'coc-highlight',
+    \ 'coc-snippets',
     \ ]
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
+" Make <tab> used for trigger completion, nd jump like VSCode.
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
@@ -98,7 +99,12 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Use <c-space> to trigger completion.
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+
 inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
@@ -201,7 +207,9 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 
-"" lightline
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                  lightline                                   "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! StatusDiagnostic() abort
   let info = get(b:, 'coc_diagnostic_info', {})
   if empty(info) | return '' | endif
@@ -248,20 +256,21 @@ let g:lightline = {
   \ }
 \ }
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                               color and theme                                "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " One dark themes
 "Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
-"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
-"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
 if (has("nvim"))
 "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 endif
 "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
 "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
 " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
 if (has("termguicolors"))
-set termguicolors
+    set termguicolors
 endif
 colorscheme onedark
 
