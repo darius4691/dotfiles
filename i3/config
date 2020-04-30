@@ -1,4 +1,12 @@
-# ArchLabs i3 config
+# ______  _______  ______ _____ _     _ _______
+# |     \ |_____| |_____/   |   |     | |______
+# |_____/ |     | |    \_ __|__ |_____| ______|
+#                                              
+# i3-gaps configuration files, modified from the ArchLabs i3 config
+
+################################################################################
+#                                    Colors                                    #
+################################################################################
 
 # Xresources      var      value       fallback
 set_from_resource $bg      background  #19043C
@@ -20,9 +28,42 @@ client.urgent           $red  $bg $red   $red  $red
 client.placeholder      $grey $bg $bg    $bg   $bg
 client.background       $bg
 
-# border & title.. Must be set to border pixel for gaps to work
-for_window [class="^.*"] border pixel 2, title_format "<b> %class >> %title </b>"
+################################################################################
+#                            Borders&Gaps&Defaults                             #
+################################################################################
 
+# $Mod key: Mod4=<Super>; Mod1=<Alt> 
+set $Mod Mod4 
+
+# direction keys
+set $up k
+set $down j
+set $left h
+set $right l
+
+#Symbols 1:home, 2:browser, 3:file, 4:picture, 5:develope, 6:game, 7:docs, 8:lab
+set $WS1 "1: " 
+set $WS2 "2: " 
+set $WS3 "3: " 
+set $WS4 "4: " 
+set $WS5 "5: " 
+set $WS6 "6: " 
+set $WS7 "7: " 
+set $WS8 "8: " 
+
+# monitors
+set $Mon1 HDMI1
+set $Mon2 HDMI2
+
+#Setting border style to pixel eliminates title bars. 
+#Normal allows you to adjust edge border width while keeping your title bar.
+default_border pixel 2
+default_floating_border pixel 2
+hide_edge_borders both
+
+default_orientation horizontal
+
+popup_during_fullscreen smart
 # gaps
 gaps inner 15
 gaps outer 5
@@ -30,99 +71,97 @@ gaps outer 5
 # font
 font pango:DejaVu Sans Mono 10
 
-# $Mod = Super or Alt?
-set $Mod Mod4
-#set $Mod Mod1
+################################################################################
+#                                Basic Keybinds                                #
+################################################################################
 
-# direction keys
-set $up l
-set $down k
-set $left j
-set $right semicolon
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $Mod+Shift+r restart
 
-set $WS1 "1: "
-set $WS2 "2: "
-set $WS3 "3: "
-set $WS4 "4: "
-set $WS5 "5: "
-set $WS6 "6: "
-set $WS7 "7: "
-set $WS8 "8: "
+# reload the configuration file
+bindsym $Mod+Shift+c reload
 
-# monitors
-set $Mon1 HDMI1
-set $Mon2 HDMI2
+# Scratchpad, Floating
+bindsym $Mod+Shift+space floating toggle
+floating_modifier  Mod1
 
-#####################################################
-###############     Autostart      ##################
-#####################################################
-
-# run with reload
-exec_always --no-startup-id al-polybar-session
-exec_always --no-startup-id nitrogen --restore
-exec_always --no-startup-id xrdb -load ~/.Xresources
-
-# If you have a numpad you may want to enable this
-# exec_always --no-startup-id numlockx on
-
-# run once
-exec --no-startup-id xfsettingsd
-exec --no-startup-id al-compositor --start
-
-# polkit, required for authentication
-exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-
-# keyring for storing saved passwords
-exec --no-startup-id gnome-keyring-daemon --start --components=pkcs11
-
-# pressing super key alone simulates pressing Alt-F1
-exec --no-startup-id ksuperkey -e 'Super_L=Alt_L|F1'
-exec --no-startup-id ksuperkey -e 'Super_R=Alt_L|F1'
-
-###########################################################
-#############         Bindings           ##################
-###########################################################
+bindsym $Mod+Shift+z move scratchpad
+bindsym $Mod+z scratchpad show
 
 # kill focused window
-bindsym $Mod+Shift+q kill
-bindsym Mod1+q kill
+bindsym $Mod+q kill
 
-# launchers
-bindsym Control+space exec --no-startup-id rofr.sh -r
+# change focus
+bindsym $Mod+$left  focus left
+bindsym $Mod+$down  focus down
+bindsym $Mod+$up    focus up
+bindsym $Mod+$right focus right
 
-# this is needed for super key to launch rofi
-bindsym Mod1+F1 exec --no-startup-id rofr.sh -r
+# alternatively, you can use the cursor keys:
+bindsym $Mod+Left  focus left
+bindsym $Mod+Down  focus down
+bindsym $Mod+Up    focus up
+bindsym $Mod+Right focus right
 
-# core
-bindsym $Mod+e exec --no-startup-id geany
-bindsym $Mod+t exec exo-open --launch TerminalEmulator
-bindsym $Mod+w exec exo-open --launch WebBrowser
-bindsym $Mod+f exec exo-open --launch FileManager
+bindsym $Mod+bracketright focus parent
+bindsym $Mod+bracketleft focus child
 
-# logout script
-bindsym $Mod+x exec --no-startup-id rofr.sh -l
+# switch to workspace with urgent window
+for_window [urgent="latest"] focus
+focus_on_window_activation   focus
 
-# Screenshot
-bindsym Print exec --no-startup-id "scrot '%S.png' \
-            -e 'mv $f $$(xdg-user-dir PICTURES)/ArchLabs-%S-$wx$h.png \
-            ; gpicview $$(xdg-user-dir PICTURES)/ArchLabs-%S-$wx$h.png'"
+################################################################################
+#                             Window Manipulation                              #
+################################################################################
 
-# audio
-bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
-bindsym XF86AudioNext exec --no-startup-id playerctl next
-bindsym XF86AudioPrev exec --no-startup-id playerctl previous
-bindsym XF86AudioStop exec --no-startup-id playerctl stop
-bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 2
-bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 2
-bindsym XF86AudioMute exec --no-startup-id pamixer -t
+set $mode_man Manipulate: Windows
+bindsym $Mod+m mode "$mode_man"
+mode "$mode_man"{
+    # change focus
+    bindsym $left  focus left
+    bindsym $down  focus down
+    bindsym $up    focus up
+    bindsym $right focus right
+    # focus parent and child
+    bindsym bracketright focus parent
+    bindsym bracketleft focus child
+    # change layout
+    bindsym w layout tabbed
+    bindsym s layout stacking
+    bindsym v layout toggle split
+    # Size
+    bindsym $Mod+shift+$up    resize shrink height 10 px or 1 ppt
+    bindsym $Mod+shift+$down  resize grow   height 10 px or 1 ppt
+    bindsym $Mod+shift+$left  resize shrink width  10 px or 1 ppt
+    bindsym $Mod+shift+$right resize grow   width  10 px or 1 ppt
+    # move window
+    bindsym $Mod+$left  move left  10px
+    bindsym $Mod+$down  move down  10px
+    bindsym $Mod+$up    move up    10px
+    bindsym $Mod+$right move right 10px
+    # kill window
+    bindsym q kill
+    # escape to default mode
+    bindsym Escape mode "default"
+}
 
-# backlight
-bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10
-bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10
+################################################################################
+#                               Open New Windows                               #
+################################################################################
 
-################################################################
-###########          Workspace Bindings          ###############
-################################################################
+set $mode_split Split: [hvws]
+bindsym $Mod+s mode "$mode_split"
+mode "$mode_split" {
+    # container layout
+    bindsym h split h, mode "default"
+    bindsym v split v, mode "default"
+    bindsym w split toggle, layout tabbed, mode "default"
+    bindsym s split toggle, layout stacking, mode "default"
+}
+
+################################################################################
+#                              Workspace Bindings                              #
+################################################################################
 
 # workspace assignment
 workspace $WS1 output $Mon1
@@ -154,100 +193,93 @@ bindsym $Mod+Shift+6 move container to workspace $WS6; workspace $WS6
 bindsym $Mod+Shift+7 move container to workspace $WS7; workspace $WS7
 bindsym $Mod+Shift+8 move container to workspace $WS8; workspace $WS8
 
-############################################################
-##############     Reload configs           ################
-############################################################
+################################################################################
+#                          Borders&Gaps Manipulation                           #
+################################################################################
 
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $Mod+Shift+r restart
+set $mode_bg Manipulate: Border And Gaps
+bindsym $Mod+b mode "$mode_bg"
+mode "$mode_bg"{
+    # changing border style
+    bindsym n border normal
+    bindsym y border 1pixel
+    bindsym u border none
+    # toggle borer
+    bindsym shift+b border toggle
+    # change gaps
+    bindsym plus        gaps inner current plus  5
+    bindsym minus       gaps inner current minus 5
+    bindsym Shift+plus  gaps outer current plus  5
+    bindsym Shift+minus gaps outer current minus 5
+    bindsym $Mod+plus        gaps inner all plus  5
+    bindsym $Mod+minus       gaps inner all minus 5
+    bindsym $Mod+Shift+plus  gaps outer all plus  5
+    bindsym $Mod+Shift+minus gaps outer all minus 5
+    # escape to default mode
+    bindsym Escape mode "default"
+}
+#####################################################
+###############     Autostart      ##################
+#####################################################
 
-# reload the configuration file
-bindsym $Mod+Shift+c reload
+# run with reload
+exec_always --no-startup-id polybar i3-bar
+exec_always --no-startup-id nitrogen --restore
+exec_always --no-startup-id xrdb -load ~/.Xresources
 
-########################################################
-############      Container/Window control  ############
-########################################################
+# If you have a numpad you may want to enable this
+# exec_always --no-startup-id numlockx on
 
-# Scratchpad, Floating
-bindsym $Mod+Shift+space floating toggle
-floating_modifier  Mod1
+# run once
+exec --no-startup-id xfsettingsd
+exec --no-startup-id al-compositor --start
 
-bindsym $Mod+Shift+z move scratchpad
-bindsym $Mod+z scratchpad show
+# polkit, required for authentication
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
-# change focus
-bindsym $Mod+$left  focus left
-bindsym $Mod+$down  focus down
-bindsym $Mod+$up    focus up
-bindsym $Mod+$right focus right
+# keyring for storing saved passwords
+exec --no-startup-id gnome-keyring-daemon --start --components=pkcs11
 
-# alternatively, you can use the cursor keys:
-bindsym $Mod+Left  focus left
-bindsym $Mod+Down  focus down
-bindsym $Mod+Up    focus up
-bindsym $Mod+Right focus right
+# pressing super key alone simulates pressing Alt-F1
+exec --no-startup-id ksuperkey -e 'Super_L=Alt_L|F1'
+exec --no-startup-id ksuperkey -e 'Super_R=Alt_L|F1'
 
-bindsym $Mod+p focus parent
-bindsym $Mod+c focus child
+###########################################################
+#############         Bindings           ##################
+###########################################################
 
-# move focused window
-bindsym $Mod+Shift+$left  move left  10px
-bindsym $Mod+Shift+$down  move down  10px
-bindsym $Mod+Shift+$up    move up    10px
-bindsym $Mod+Shift+$right move right 10px
+# launchers
+bindsym Control+space exec --no-startup-id $HOME/bin/rofr.sh -r
 
-# alternatively, you can use the cursor keys:
-bindsym $Mod+Shift+Up    move up    10px
-bindsym $Mod+Shift+Down  move down  10px
-bindsym $Mod+Shift+Left  move left  10px
-bindsym $Mod+Shift+Right move right 10px
+# this is needed for super key to launch rofi
+bindsym Mod1+F1 exec --no-startup-id $HOME/bin/rofr.sh -r
 
-# Size
-bindsym Mod1+Up    resize shrink height 10 px or 1 ppt
-bindsym Mod1+Down  resize grow   height 10 px or 1 ppt
-bindsym Mod1+Left  resize shrink width  10 px or 1 ppt
-bindsym Mod1+Right resize grow   width  10 px or 1 ppt
+# core
+bindsym $Mod+e exec --no-startup-id geany
+bindsym $Mod+t exec exo-open --launch TerminalEmulator
+bindsym $Mod+w exec exo-open --launch WebBrowser
+bindsym $Mod+f exec exo-open --launch FileManager
 
-# layout toggle, keycode 23 is Tab
-bindcode Mod1+23 layout toggle tabbed split
-bindcode $Mod+23 layout toggle splitv splith
+# logout script
+bindsym $Mod+x exec --no-startup-id $HOME/bin/rofr.sh -l
 
-# switch to workspace with urgent window
-for_window [urgent="latest"] focus
-focus_on_window_activation   focus
+# Screenshot
+bindsym Print exec --no-startup-id "scrot '%S.png' \
+            -e 'mv $f $$(xdg-user-dir PICTURES)/ArchLabs-%S-$wx$h.png \
+            ; gpicview $$(xdg-user-dir PICTURES)/ArchLabs-%S-$wx$h.png'"
 
-# container layout
-bindsym $Mod+h split h
-bindsym $Mod+v split v
-bindsym $Mod+Shift+t layout tabbed
-bindsym $Mod+Shift+s layout stacking
-bindsym $Mod+Shift+h layout toggle split
-default_orientation horizontal
+# audio
+bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
+bindsym XF86AudioNext exec --no-startup-id playerctl next
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous
+bindsym XF86AudioStop exec --no-startup-id playerctl stop
+bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 2
+bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 2
+bindsym XF86AudioMute exec --no-startup-id pamixer -t
 
-######################################################
-###############      Border & Gaps     ###############
-######################################################
-
-new_window normal
-new_float normal
-hide_edge_borders both
-popup_during_fullscreen smart
-bindsym $Mod+shift+b border toggle
-
-# changing border style
-bindsym $Mod+n border normal
-bindsym $Mod+y border 1pixel
-bindsym $Mod+u border none
-
-# change gaps
-bindsym $Mod+plus        gaps inner current plus  5
-bindsym $Mod+minus       gaps inner current minus 5
-bindsym $Mod+Shift+plus  gaps outer current plus  5
-bindsym $Mod+Shift+minus gaps outer current minus 5
-bindsym $Mod+Control+plus        gaps inner all plus  5
-bindsym $Mod+Control+minus       gaps inner all minus 5
-bindsym $Mod+Control+Shift+plus  gaps outer all plus  5
-bindsym $Mod+Control+Shift+minus gaps outer all minus 5
+# backlight
+bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10
 
 ###################################################
 ############    application settings   ############
