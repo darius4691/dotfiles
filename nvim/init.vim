@@ -7,7 +7,6 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                Basic Settins                                 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-                                              
 syntax enable                               " syntax highlight
 set number                                  " show line numbers
 set ruler
@@ -19,7 +18,7 @@ set expandtab                               " expand tabs into spaces
 set autoindent                              " indent when moving to the next line while writing code
 set cursorline                              " shows line under the cursor's line
 set showmatch                               " shows matching part of bracket pairs (), [], {}
-set enc=utf-8	                            " utf-8 by default
+set enc=utf-8                               " utf-8 by default
 set backspace=indent,eol,start              " backspace removes all (indents, EOLs, start) What is start?
 set scrolloff=10                            " let 10 lines before/after cursor during scroll
 set clipboard=unnamed                       " use system clipboard
@@ -32,7 +31,8 @@ set shortmess+=c                            " Don't pass messages to ins-complet
 set signcolumn=yes                          " Always show the signcolumn, otherwise it would shift the text each time diagnostics appear/become resolved.
 set noshowmode                              " compatible with lightline
 set showtabline=2                           " show tab line always
-
+set list                                    " show invisible characters
+set listchars=tab:>-,trail:~                " list symbols, extends,precedes are useless if warp is on
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                   vim plug                                   "
@@ -55,7 +55,6 @@ call plug#begin(stdpath('data') . '/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " coc system
 Plug 'joshdick/onedark.vim'                     " one dark color theme
 Plug 'itchyny/lightline.vim'                    " status line
-Plug 'mengelbrecht/lightline-bufferline'        " show buffers on tanline
 Plug 'tpope/vim-fugitive'                       " git integration
 Plug 'glench/vim-jinja2-syntax'                 " html sub language syntax
 Plug 'junegunn/vim-easy-align'                  " align by :EasyAlign
@@ -239,6 +238,10 @@ function! GitStatus() abort
     return get(g:, 'coc_git_status', '')
 endfunction
 
+function! CountBuffers() abort
+    return 'Buffers: ' . len(filter(range(1, bufnr('$')), 'buflisted(v:val)'))
+endfunction
+
 let g:lightline = {
   \ 'colorscheme': 'one',
   \ 'active': {
@@ -258,14 +261,16 @@ let g:lightline = {
   \ }
 \ }
 let g:lightline.tabline          = {'left': [['tabs']], 'right': [['buffers']]}
-let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
-let g:lightline.component_type   = {'tabs': 'tabsel', 'buffers': 'tabsel'}
+let g:lightline.component_expand = {'buffers': 'CountBuffers'}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                               plugin Settings                                "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:gist_token_file = stdpath('config') . '/gist-vim'
+let g:gist_post_private = 1
+
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                               color and theme                                "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
