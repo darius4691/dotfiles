@@ -84,6 +84,8 @@ let g:coc_global_extensions = [
     \ 'coc-json',
     \ 'coc-highlight',
     \ 'coc-snippets',
+    \ 'coc-sh',
+    \ 'coc-texlab',
     \ ]
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
