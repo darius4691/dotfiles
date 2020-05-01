@@ -55,13 +55,15 @@ call plug#begin(stdpath('data') . '/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " coc system
 Plug 'joshdick/onedark.vim'                     " one dark color theme
 Plug 'itchyny/lightline.vim'                    " status line
+Plug 'mengelbrecht/lightline-bufferline'        " show buffers on tanline
 Plug 'tpope/vim-fugitive'                       " git integration
 Plug 'glench/vim-jinja2-syntax'                 " html sub language syntax
 Plug 'junegunn/vim-easy-align'                  " align by :EasyAlign
 Plug 'michaeljsmith/vim-indent-object'          " <count>ai ii aI iI indent level
 Plug '$XDG_DATA_HOME/fzf'                       " fzf integration
 Plug 'junegunn/fzf.vim'                         " fzf integration
-
+Plug 'mattn/webapi-vim'                         " required by vim-gist
+Plug 'mattn/vim-gist'                           " interactive with github gist
 " Initialize plugin system
 call plug#end()
 if plug_install
@@ -255,7 +257,15 @@ let g:lightline = {
   \   'blame': 'LightlineGitBlame',
   \ }
 \ }
+let g:lightline.tabline          = {'left': [['tabs']], 'right': [['buffers']]}
+let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
+let g:lightline.component_type   = {'tabs': 'tabsel', 'buffers': 'tabsel'}
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                               plugin Settings                                "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:gist_token_file = stdpath('config') . '/gist-vim'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                               color and theme                                "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -273,4 +283,5 @@ if (has("termguicolors"))
     set termguicolors
 endif
 colorscheme onedark
-
+" enable transparent background
+" hi Normal guibg=NONE ctermbg=NONE
