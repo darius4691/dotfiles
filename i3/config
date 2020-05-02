@@ -225,6 +225,8 @@ mode "$mode_bg"{
 
 # run with reload
 exec_always --no-startup-id polybar i3-bar
+exec_always --no-startup-id conkr
+exec_always --no-startup-id picom
 exec_always --no-startup-id nitrogen --restore
 exec_always --no-startup-id xrdb -load ~/.Xresources
 
