@@ -33,7 +33,10 @@ set noshowmode                              " compatible with lightline
 set showtabline=2                           " show tab line always
 set list                                    " show invisible characters
 set listchars=tab:>-,trail:~                " list symbols, extends,precedes are useless if warp is on
+set foldnestmax=1                           " only fold top level
+set foldmethod=syntax                       "fold by syntax
 
+let g:loaded_python_provider = 0            " disable python2 support
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                   vim plug                                   "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -63,6 +66,11 @@ Plug '$XDG_DATA_HOME/fzf'                       " fzf integration
 Plug 'junegunn/fzf.vim'                         " fzf integration
 Plug 'mattn/webapi-vim'                         " required by vim-gist
 Plug 'mattn/vim-gist'                           " interactive with github gist
+Plug 'tpope/vim-surround'                       " quoting/parenthesizing
+Plug 'tpope/vim-repeat'                         " enable repeating supported plugin maps with .
+Plug 'diepm/vim-rest-console'                   " REST client
+" interactive with jupyter qtconsole
+"Plug 'jupyter-vim/jupyter-vim', { 'for': 'python'}
 " Initialize plugin system
 call plug#end()
 if plug_install
@@ -85,7 +93,7 @@ let g:coc_global_extensions = [
     \ 'coc-highlight',
     \ 'coc-snippets',
     \ 'coc-sh',
-    \ 'coc-texlab',
+    \ 'coc-go',
     \ ]
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
@@ -268,9 +276,20 @@ let g:lightline.component_expand = {'buffers': 'CountBuffers'}
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                               plugin Settings                                "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
+" vim-gist token
 let g:gist_token_file = stdpath('config') . '/gist-vim'
 let g:gist_post_private = 1
+
+" fzf buffer
+nnoremap <silent> <space>b  :Buffers<cr>
+" open files
+nnoremap <silent> <space>f  :Files<cr>
+
+"disable curl prograss bar for rest client
+let g:vrc_curl_opts = {
+    \ '-s': '',
+    \ '-i': '',
+\}
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
